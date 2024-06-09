@@ -1,42 +1,39 @@
-import React, {useEffect, useRef, useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useAssets, Asset } from 'expo-asset';
 import { Link } from 'expo-router';
 import { ResizeMode, Video } from 'expo-av';
+import LottieView from 'lottie-react-native';
 
 import Colors from '../constants/Colors';
 import { defaultStyles } from '../constants/Styles';
 
+const HEIGHT = Dimensions.get("screen").height
+
 const Page = () => {
   const video = useRef(null);
-  // const [assets] = useAssets([require('../assets/videos/intro.mp4')]);
-  const [loadedVideo, setLoadedVideo] = useState<Asset[]>()
+  const [assets] = useAssets([require('../assets/videos/intro.mp4')]);
 
-  useEffect(() => {
-    async function loadAsyncVideo () {
-      const videoAsset = await Asset.loadAsync(require('../assets/videos/intro.mp4')); 
-      setLoadedVideo(videoAsset);
-    }
-
-    loadAsyncVideo();
-  },[])
-
-
+  
   return (
     <View style={styles.container}>
-      {loadedVideo ? (
+      {assets ? (
         <Video
           ref={video}
           resizeMode={ResizeMode.COVER}
           isMuted
           isLooping
           shouldPlay
-          source={{ uri: loadedVideo[0].uri}}
+          source={{ uri: assets[0].uri }}
           style={styles.video}
         />
       ) : (
-        <Text>Loading video...</Text>
-      )}
+        <LottieView
+          autoPlay
+          style={styles.lottie}
+          source={require('../assets/lotties/loading.json')}
+        />
+      )} 
       <View style={{ marginTop: 80, padding: 20 }}>
         <Text style={styles.header}>Ready to change the way you money?</Text>
       </View>
@@ -86,6 +83,13 @@ const styles = StyleSheet.create({
     marginBottom: 60,
     paddingHorizontal: 20,
   },
+  lottie: {
+    position: "absolute",
+    marginTop: HEIGHT/2,
+    height: 180,
+    width: 180,
+    alignSelf: "center"
+  }
 });
 
 export default Page;
