@@ -13,7 +13,6 @@ const HEIGHT = Dimensions.get("screen").height
 const Page = () => {
   const video = useRef(null);
   const [assets] = useAssets([require('../assets/videos/intro.mp4')]);
-
   
   return (
     <View style={styles.container}>

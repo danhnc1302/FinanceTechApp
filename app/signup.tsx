@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import Colors from '@/constants/Colors';
 import { defaultStyles } from '@/constants/Styles';
 import { Link, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useSignUp } from '@clerk/clerk-expo';
 import {
   View,
   Text,
@@ -12,13 +13,25 @@ import {
   Platform,
 } from 'react-native';
 const Page = () => {
-  const [countryCode, setCountryCode] = useState('+49');
+  const [countryCode, setCountryCode] = useState('+84');
   const [phoneNumber, setPhoneNumber] = useState('');
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 80 : 0;
   const router = useRouter();
+  const { signUp } = useSignUp();
 
   const onSignup = async () => {
-    
+    const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+    console.log(fullPhoneNumber)
+    try {
+      await signUp!.create({
+        phoneNumber: fullPhoneNumber,
+      });
+      signUp!.preparePhoneNumberVerification();
+
+      router.push({ pathname: '/verify/[phone]', params: { phone: fullPhoneNumber } });
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
   };
 
   return (
@@ -34,7 +47,6 @@ const Page = () => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Country code"
             placeholderTextColor={Colors.gray}
             value={countryCode}
           />
@@ -76,7 +88,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: Colors.lightGray,
-    padding: 20,
+    padding: 16,
     borderRadius: 16,
     fontSize: 20,
     marginRight: 10,

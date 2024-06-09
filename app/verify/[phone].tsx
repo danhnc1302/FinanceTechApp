@@ -3,6 +3,7 @@ import { defaultStyles } from '@/constants/Styles';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { Fragment, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { isClerkAPIResponseError, useSignIn, useSignUp } from '@clerk/clerk-expo';
 import {
   CodeField,
   Cursor,
@@ -12,6 +13,8 @@ import {
 const CELL_COUNT = 6;
 
 const Page = () => {
+  const { signIn } = useSignIn();
+  const { signUp, setActive } = useSignUp();
   const { phone, signin } = useLocalSearchParams<{ phone: string; signin: string }>();
   const [code, setCode] = useState('');
 
@@ -32,11 +35,32 @@ const Page = () => {
   }, [code]);
 
   const verifyCode = async () => {
-
+    try {
+      await signUp!.attemptPhoneNumberVerification({
+        code,
+      });
+      await setActive!({ session: signUp!.createdSessionId });
+    } catch (err) {
+      console.log('error', JSON.stringify(err, null, 2));
+      if (isClerkAPIResponseError(err)) {
+        Alert.alert('Error', err.errors[0].message);
+      }
+    }
   };
 
   const verifySignIn = async () => {
-
+    try {
+      await signIn!.attemptFirstFactor({
+        strategy: 'phone_code',
+        code,
+      });
+      await setActive!({ session: signIn!.createdSessionId });
+    } catch (err) {
+      console.log('error', JSON.stringify(err, null, 2));
+      if (isClerkAPIResponseError(err)) {
+        Alert.alert('Error', err.errors[0].message);
+      }
+    }
   };
 
   return (
