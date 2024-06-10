@@ -36,10 +36,14 @@ const Page = () => {
 
   const verifyCode = async () => {
     try {
-      await signUp!.attemptPhoneNumberVerification({
+      const res = await signUp?.attemptPhoneNumberVerification({
         code,
       });
-      await setActive!({ session: signUp!.createdSessionId });
+      if (res?.verifications.phoneNumber.status == "verified") {
+        await setActive!({ session: signUp?.createdSessionId });
+      } else {
+        Alert.alert('Wrong OTP!');
+      }
     } catch (err) {
       console.log('error', JSON.stringify(err, null, 2));
       if (isClerkAPIResponseError(err)) {

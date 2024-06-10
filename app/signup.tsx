@@ -12,6 +12,9 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+
+const TEST_PHONENUMBER = "+15555550100"
+
 const Page = () => {
   const [countryCode, setCountryCode] = useState('+84');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -21,13 +24,12 @@ const Page = () => {
 
   const onSignup = async () => {
     const fullPhoneNumber = `${countryCode}${phoneNumber}`;
-    console.log(fullPhoneNumber)
-    try {
-      await signUp!.create({
-        phoneNumber: fullPhoneNumber,
-      });
-      signUp!.preparePhoneNumberVerification();
 
+    try {
+      await signUp?.create({
+        phoneNumber: TEST_PHONENUMBER,
+      });
+      signUp?.preparePhoneNumberVerification();
       router.push({ pathname: '/verify/[phone]', params: { phone: fullPhoneNumber } });
     } catch (error) {
       console.error('Error signing up:', error);
