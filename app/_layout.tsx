@@ -71,7 +71,9 @@ const InitialLayout = () => {
     } else if (!isSignedIn) {
       router.replace('/');
     }
+    console.log("alo")
   }, [isSignedIn]);
+  console.log("alo")
 
   if (!loaded || !isLoaded) {
     return (
@@ -134,6 +136,7 @@ const InitialLayout = () => {
           ),
         }}
       />
+      <Stack.Screen name="(authenticated)/(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
 };

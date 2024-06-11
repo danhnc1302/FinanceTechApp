@@ -1,6 +1,6 @@
 import Colors from '@/constants/Colors';
 import { defaultStyles } from '@/constants/Styles';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, useRouter, useLocalSearchParams } from 'expo-router';
 import { Fragment, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { isClerkAPIResponseError, useSignIn, useSignUp } from '@clerk/clerk-expo';
@@ -17,7 +17,7 @@ const Page = () => {
   const { signUp, setActive } = useSignUp();
   const { phone, signin } = useLocalSearchParams<{ phone: string; signin: string }>();
   const [code, setCode] = useState('');
-
+  const router = useRouter();
   const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: code,
@@ -41,6 +41,8 @@ const Page = () => {
       });
       if (res?.verifications.phoneNumber.status == "verified") {
         await setActive!({ session: signUp?.createdSessionId });
+      router.push({ pathname: '/(authenticated)/(tabs)/home'});
+
       } else {
         Alert.alert('Wrong OTP!');
       }
@@ -59,6 +61,7 @@ const Page = () => {
         code,
       });
       await setActive!({ session: signIn!.createdSessionId });
+      router.push('/(authenticated)/(tabs)');
     } catch (err) {
       console.log('error', JSON.stringify(err, null, 2));
       if (isClerkAPIResponseError(err)) {

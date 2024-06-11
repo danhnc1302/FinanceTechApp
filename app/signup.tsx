@@ -24,7 +24,6 @@ const Page = () => {
 
   const onSignup = async () => {
     const fullPhoneNumber = `${countryCode}${phoneNumber}`;
-
     try {
       await signUp?.create({
         phoneNumber: TEST_PHONENUMBER,
