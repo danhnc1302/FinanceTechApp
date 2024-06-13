@@ -1,27 +1,16 @@
-import { useEffect } from 'react';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import Colors from '@/constants/Colors';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
+import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Link, Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { Ionicons } from '@expo/vector-icons';
-import * as SecureStore from 'expo-secure-store';
-import 'react-native-reanimated';
-
-import Colors from '../constants/Colors';
-import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
+import { useEffect } from 'react';
+import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+import * as SecureStore from 'expo-secure-store';
 
 // Cache the Clerk JWT
 const tokenCache = {
@@ -40,6 +29,14 @@ const tokenCache = {
     }
   },
 };
+
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from 'expo-router';
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
 
 const InitialLayout = () => {
   const [loaded, error] = useFonts({
@@ -71,9 +68,7 @@ const InitialLayout = () => {
     } else if (!isSignedIn) {
       router.replace('/');
     }
-    console.log("alo")
   }, [isSignedIn]);
-  console.log("alo")
 
   if (!loaded || !isLoaded) {
     return (
@@ -100,6 +95,7 @@ const InitialLayout = () => {
           ),
         }}
       />
+
       <Stack.Screen
         name="login"
         options={{
@@ -121,7 +117,9 @@ const InitialLayout = () => {
           ),
         }}
       />
+
       <Stack.Screen name="help" options={{ title: 'Help', presentation: 'modal' }} />
+
       <Stack.Screen
         name="verify/[phone]"
         options={{
@@ -141,17 +139,15 @@ const InitialLayout = () => {
   );
 };
 
-function RootLayoutNav() {
+const RootLayoutNav = () => {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="light" />
-        <InitialLayout />
-      </GestureHandlerRootView>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <StatusBar style="light" />
+            <InitialLayout />
+          </GestureHandlerRootView>
     </ClerkProvider>
   );
-}
+};
 
 export default RootLayoutNav;
-
-

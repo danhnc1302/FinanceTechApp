@@ -41,8 +41,7 @@ const Page = () => {
       });
       if (res?.verifications.phoneNumber.status == "verified") {
         await setActive!({ session: signUp?.createdSessionId });
-      router.push({ pathname: '/(authenticated)/(tabs)/home'});
-
+        router.replace("/(authenticated)/(tabs)/home")
       } else {
         Alert.alert('Wrong OTP!');
       }
@@ -61,7 +60,7 @@ const Page = () => {
         code,
       });
       await setActive!({ session: signIn!.createdSessionId });
-      router.push('/(authenticated)/(tabs)');
+      router.replace("/(authenticated)/(tabs)/home")
     } catch (err) {
       console.log('error', JSON.stringify(err, null, 2));
       if (isClerkAPIResponseError(err)) {
