@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { useBalanceStore } from '../../store/balanceStore';
+// import { useBalanceStore } from '../../store/balanceStore';
 import Colors from '../../constants/Colors';
 import { SIZE } from './Config';
 
@@ -27,7 +27,7 @@ interface TileProps {
 }
 
 const Tile = ({ id }: TileProps) => {
-  const { transactions } = useBalanceStore();
+  // const { transactions } = useBalanceStore();
 
   if (id === 'spent') {
     return (
@@ -73,7 +73,7 @@ const Tile = ({ id }: TileProps) => {
             Recent transaction
           </Text>
 
-          {transactions.length === 0 && (
+          {/* {transactions.length === 0 && (
             <Text style={{ color: Colors.gray, fontWeight: 'bold', fontSize: 18, paddingTop: 10 }}>
               No transactions
             </Text>
@@ -94,7 +94,7 @@ const Tile = ({ id }: TileProps) => {
                 {transactions[transactions.length - 1].title}
               </Text>
             </>
-          )}
+          )} */}
         </View>
       </View>
     );

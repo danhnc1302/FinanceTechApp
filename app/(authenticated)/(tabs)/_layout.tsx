@@ -1,10 +1,12 @@
+import React from 'react';
+import Colors from '../../../constants/Colors';
 import { FontAwesome } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { BlurView } from 'expo-blur';
-import Colors from '../../../constants/Colors';
 import CustomHeader from '../../../components/CustomHeader';
 
 const Layout = () => {
+  console.log("danh")
   return (
     <Tabs
       screenOptions={{
@@ -28,7 +30,7 @@ const Layout = () => {
           elevation: 0,
           borderTopWidth: 0,
         },
-      }}>
+      }}> 
       <Tabs.Screen
         name="home"
         options={{
@@ -37,7 +39,7 @@ const Layout = () => {
             <FontAwesome name="registered" size={size} color={color} />
           ),
           header: () => <CustomHeader />,
-          headerTransparent: false,
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
@@ -58,6 +60,7 @@ const Layout = () => {
           ),
         }}
       />
+      
       <Tabs.Screen
         name="crypto"
         options={{

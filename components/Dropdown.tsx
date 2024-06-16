@@ -1,4 +1,4 @@
-import RoundBtn from '../components/RoundBtn';
+import RoundBtn from '@/components/RoundBtn';
 import * as DropdownMenu from 'zeego/dropdown-menu';
 
 const Dropdown = () => {

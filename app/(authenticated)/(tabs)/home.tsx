@@ -6,7 +6,7 @@ import RoundBtn from '../../../components/RoundBtn';
 import WidgetList from '../../../components/SortableList/WidgetList';
 import Colors from '../../../constants/Colors';
 import { defaultStyles } from '../../../constants/Styles';
-import { useBalanceStore } from '../../../store/balanceStore';
+// import { useBalanceStore } from '../../../store/balanceStore';
 
 const Page = () => {
   const headerHeight = useHeaderHeight();
@@ -22,7 +22,7 @@ const Page = () => {
       }}>
       <View style={styles.account}>
         <View style={styles.row}>
-          <Text style={styles.balance}>{}</Text>
+          <Text style={styles.balance}>{ }</Text>
           <Text style={styles.currency}>€</Text>
         </View>
         <TouchableOpacity
@@ -34,19 +34,19 @@ const Page = () => {
         </TouchableOpacity>
       </View>
 
-      {/* <View style={styles.actionRow}>
-        <RoundBtn icon={'add'} text={'Add money'} onPress={onAddMoney} />
-        <RoundBtn icon={'refresh'} text={'Exchange'} onPress={ () => {}} />
-        <RoundBtn icon={'list'} text={'Details'} /> 
+      <View style={styles.actionRow}>
+        <RoundBtn icon={'add'} text={'Add money'} onPress={onAddMoney}/>
+        <RoundBtn icon={'refresh'} text={'Exchange'} onPress={() => { }} />
+        <RoundBtn icon={'list'} text={'Details'} />
         <Dropdown />
       </View>
 
       <Text style={defaultStyles.sectionHeader}>Transactions</Text>
       <View style={styles.transactions}>
-        
+
       </View>
       <Text style={defaultStyles.sectionHeader}>Widgets</Text>
-      <WidgetList />  */}
+      <WidgetList />
     </ScrollView>
   );
 };
