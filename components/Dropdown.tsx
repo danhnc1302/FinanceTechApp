@@ -1,51 +1,45 @@
 import RoundBtn from '@/components/RoundBtn';
-import * as DropdownMenu from 'zeego/dropdown-menu';
+import { View, StyleSheet, Text } from 'react-native';
+import {
+  MenuContext,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  MenuProvider,
+} from 'react-native-popup-menu';
 
 const Dropdown = () => {
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
+    <Menu opened={true}>
+      <MenuTrigger style={styles.button}>
         <RoundBtn icon={'ellipsis-horizontal'} text={'More'} />
-      </DropdownMenu.Trigger>
-
-      <DropdownMenu.Content>
-        <DropdownMenu.Item key="statement">
-          <DropdownMenu.ItemTitle>Statement</DropdownMenu.ItemTitle>
-          <DropdownMenu.ItemIcon
-            ios={{
-              name: 'list.bullet.rectangle.fill',
-              pointSize: 24,
-            }}></DropdownMenu.ItemIcon>
-        </DropdownMenu.Item>
-
-        <DropdownMenu.Item key="converter">
-          <DropdownMenu.ItemTitle>Converter</DropdownMenu.ItemTitle>
-          <DropdownMenu.ItemIcon
-            ios={{
-              name: 'coloncurrencysign.arrow.circlepath',
-              pointSize: 24,
-            }}></DropdownMenu.ItemIcon>
-        </DropdownMenu.Item>
-
-        <DropdownMenu.Item key="background">
-          <DropdownMenu.ItemTitle>Background</DropdownMenu.ItemTitle>
-          <DropdownMenu.ItemIcon
-            ios={{
-              name: 'photo.fill',
-              pointSize: 24,
-            }}></DropdownMenu.ItemIcon>
-        </DropdownMenu.Item>
-
-        <DropdownMenu.Item key="account">
-          <DropdownMenu.ItemTitle>Add new account</DropdownMenu.ItemTitle>
-          <DropdownMenu.ItemIcon
-            ios={{
-              name: 'plus.rectangle.on.folder.fill',
-              pointSize: 24,
-            }}></DropdownMenu.ItemIcon>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+      </MenuTrigger>
+      <MenuOptions>
+        <MenuOption onSelect={() => alert(` You clicked on Save`)} text="Save" />
+        <MenuOption onSelect={() => alert(`You Clicked on Delete`)}>
+          <Text style={{ color: 'red' }}>Delete</Text>
+        </MenuOption>
+        <MenuOption
+          onSelect={() => alert(`Not called`)}
+          disabled={true}
+          text="Disabled"
+        />
+      </MenuOptions>
+    </Menu>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'orange',
+  },
+  button: {
+    textAlign: 'center',
+    display: 'flex',
+  }
+});
+
 export default Dropdown;

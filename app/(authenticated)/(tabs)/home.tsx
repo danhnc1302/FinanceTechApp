@@ -7,6 +7,7 @@ import WidgetList from '../../../components/SortableList/WidgetList';
 import Colors from '../../../constants/Colors';
 import { defaultStyles } from '../../../constants/Styles';
 // import { useBalanceStore } from '../../../store/balanceStore';
+import { MenuProvider } from 'react-native-popup-menu';
 
 const Page = () => {
   const headerHeight = useHeaderHeight();
@@ -15,39 +16,44 @@ const Page = () => {
   };
 
   return (
-    <ScrollView
-      style={{ backgroundColor: Colors.background }}
-      contentContainerStyle={{
-        paddingTop: headerHeight,
-      }}>
-      <View style={styles.account}>
-        <View style={styles.row}>
-          <Text style={styles.balance}>{ }</Text>
-          <Text style={styles.currency}>€</Text>
+    <MenuProvider>
+
+      <ScrollView
+        style={{ backgroundColor: Colors.background }}
+        contentContainerStyle={{
+          paddingTop: headerHeight,
+        }}>
+        <View style={styles.account}>
+          <View style={styles.row}>
+            <Text style={styles.balance}>{ }</Text>
+            <Text style={styles.currency}>€</Text>
+          </View>
+          <TouchableOpacity
+            style={[
+              defaultStyles.pillButtonSmall,
+              { backgroundColor: Colors.lightGray, marginVertical: 20 },
+            ]}>
+            <Text style={[defaultStyles.buttonTextSmall, { color: Colors.dark }]}>Accounts</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={[
-            defaultStyles.pillButtonSmall,
-            { backgroundColor: Colors.lightGray, marginVertical: 20 },
-          ]}>
-          <Text style={[defaultStyles.buttonTextSmall, { color: Colors.dark }]}>Accounts</Text>
-        </TouchableOpacity>
-      </View>
 
-      <View style={styles.actionRow}>
-        <RoundBtn icon={'add'} text={'Add money'} onPress={onAddMoney}/>
-        <RoundBtn icon={'refresh'} text={'Exchange'} onPress={() => { }} />
-        <RoundBtn icon={'list'} text={'Details'} />
-        <Dropdown />
-      </View>
+        <View style={styles.actionRow}>
+          <RoundBtn icon={'add'} text={'Add money'} onPress={onAddMoney}/>
+          <RoundBtn icon={'refresh'} text={'Exchange'} onPress={() => { }} />
+          <RoundBtn icon={'list'} text={'Details'} />
+          <View>
+            <Dropdown />
+          </View>
+        </View>
 
-      <Text style={defaultStyles.sectionHeader}>Transactions</Text>
-      <View style={styles.transactions}>
+        <Text style={defaultStyles.sectionHeader}>Transactions</Text>
+        <View style={styles.transactions}>
 
-      </View>
-      <Text style={defaultStyles.sectionHeader}>Widgets</Text>
-      <WidgetList />
-    </ScrollView>
+        </View>
+        <Text style={defaultStyles.sectionHeader}>Widgets</Text>
+        <WidgetList />
+      </ScrollView>
+    </MenuProvider>
   );
 };
 const styles = StyleSheet.create({
