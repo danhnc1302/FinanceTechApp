@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   wrapper: {
     position: "absolute",
     padding: 10,
-    right: 55,
-    bottom: -20,
+    right: 0,
+    top: 60,
     borderRadius: 10,
     backgroundColor: "white"
   }

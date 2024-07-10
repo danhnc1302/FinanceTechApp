@@ -6,26 +6,32 @@ import RoundBtn from '../../../components/RoundBtn';
 import WidgetList from '../../../components/SortableList/WidgetList';
 import Colors from '../../../constants/Colors';
 import { defaultStyles } from '../../../constants/Styles';
-// import { useBalanceStore } from '../../../store/balanceStore';
+import { useBalanceStore } from '../../../store/balanceStore';
 import { MenuProvider } from 'react-native-popup-menu';
 
 const Page = () => {
   const headerHeight = useHeaderHeight();
-
+  const { transactions, balance, clearTransactions, runTransaction } = useBalanceStore();
+  
   const onAddMoney = () => {
+    runTransaction({
+      id: Math.random().toString(),
+      amount: Math.floor(Math.random() * 1000) * (Math.random() > 0.5 ? 1 : -1),
+      date: new Date(),
+      title: 'Added money',
+    });
   };
 
   return (
     <MenuProvider>
-
       <ScrollView
         style={{ backgroundColor: Colors.background }}
         contentContainerStyle={{
-          paddingTop: headerHeight,
+          paddingTop: headerHeight
         }}>
         <View style={styles.account}>
           <View style={styles.row}>
-            <Text style={styles.balance}>{ }</Text>
+            <Text style={styles.balance}>{balance()}</Text>
             <Text style={styles.currency}>€</Text>
           </View>
           <TouchableOpacity
@@ -36,19 +42,39 @@ const Page = () => {
             <Text style={[defaultStyles.buttonTextSmall, { color: Colors.dark }]}>Accounts</Text>
           </TouchableOpacity>
         </View>
-
         <View style={styles.actionRow}>
-          <RoundBtn icon={'add'} text={'Add money'} onPress={onAddMoney}/>
-          <RoundBtn icon={'refresh'} text={'Exchange'} onPress={() => { }} />
+          <RoundBtn icon={'add'} text={'Add money'} onPress={onAddMoney} />
+          <RoundBtn icon={'refresh'} text={'Exchange'} onPress={clearTransactions} />
           <RoundBtn icon={'list'} text={'Details'} />
           <View>
             <Dropdown />
           </View>
         </View>
-
         <Text style={defaultStyles.sectionHeader}>Transactions</Text>
         <View style={styles.transactions}>
-
+          {transactions.length === 0 && (
+            <Text style={{ padding: 14, color: Colors.gray }}>No transactions yet</Text>
+          )}
+          {transactions.map((transaction) => (
+            <View
+              key={transaction.id}
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+              <View style={styles.circle}>
+                <Ionicons
+                  name={transaction.amount > 0 ? 'add' : 'remove'}
+                  size={24}
+                  color={Colors.dark}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontWeight: '400' }}>{transaction.title}</Text>
+                <Text style={{ color: Colors.gray, fontSize: 12 }}>
+                  {transaction.date.toLocaleString()}
+                </Text>
+              </View>
+              <Text>{transaction.amount}€</Text>
+            </View>
+          ))}
         </View>
         <Text style={defaultStyles.sectionHeader}>Widgets</Text>
         <WidgetList />
@@ -58,8 +84,8 @@ const Page = () => {
 };
 const styles = StyleSheet.create({
   account: {
-    margin: 80,
-    alignItems: 'center',
+    margin: 60,
+    alignItems: 'center'
   },
   row: {
     flexDirection: 'row',

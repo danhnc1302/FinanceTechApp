@@ -6,7 +6,6 @@ import { BlurView } from 'expo-blur';
 import CustomHeader from '../../../components/CustomHeader';
 
 const Layout = () => {
-  console.log("danh")
   return (
     <Tabs
       screenOptions={{
