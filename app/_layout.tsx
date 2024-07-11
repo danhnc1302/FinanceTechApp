@@ -1,16 +1,19 @@
-import Colors from '@/constants/Colors';
+import { useEffect } from 'react';
+import { TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Link, Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 import * as SecureStore from 'expo-secure-store';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import Colors from '@/constants/Colors';
+
+const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const queryClient = new QueryClient();
 
 // Cache the Clerk JWT
 const tokenCache = {
@@ -34,8 +37,6 @@ export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
-
-
 
 const InitialLayout = () => {
   const [loaded, error] = useFonts({
@@ -141,10 +142,12 @@ const InitialLayout = () => {
 const RootLayoutNav = () => {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
+      <QueryClientProvider client={queryClient}>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <StatusBar style="light" />
             <InitialLayout />
           </GestureHandlerRootView>
+      </QueryClientProvider>
     </ClerkProvider>
   );
 };
