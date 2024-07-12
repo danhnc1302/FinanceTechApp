@@ -31,7 +31,7 @@ const Page = () => {
   });
 
   const ids = currencies.data?.map((currency: Currency) => currency.id.toString()).join(',');
-  console.log(ids)
+
   const fetchData = async () => {
     try {
       const response = await fetch(`/api/info?ids=${ids}`); // Update URL if necessary
@@ -52,8 +52,6 @@ const Page = () => {
     queryFn: fetchData,
     enabled: !!ids,
   });
-
-  console.log(data)
 
   return (
     <ScrollView
