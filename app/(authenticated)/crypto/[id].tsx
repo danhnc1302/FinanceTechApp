@@ -25,7 +25,7 @@ Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 function ToolTip({ x, y }: { x: SharedValue<number>; y: SharedValue<number> }) {
-    return <Circle cx={x} cy={y} r={8} color={Colors.primary} />;
+  return <Circle cx={x} cy={y} r={8} color={Colors.primary} />;
 }
 
 const categories = ['Overview', 'News', 'Orders', 'Transactions'];
@@ -38,26 +38,41 @@ const Page = () => {
   const { state, isActive } = useChartPressState({ x: 0, y: { price: 0 } });
 
   useEffect(() => {
-    console.log(isActive);
     if (isActive) Haptics.selectionAsync();
   }, [isActive]);
 
-  const { data } = useQuery({
+  const { data, isLoading: isLoadingData } = useQuery({
     queryKey: ['info', id],
     queryFn: async () => {
       const info = await fetch(`/api/info?ids=${id}`).then((res) => res.json());
       return info[+id];
     },
   });
-  
-  const { data: tickers } = useQuery({
+
+  const fetchData = async () => {
+    try {
+      const symbolName = `${data.symbol}-${data.name}`.toLowerCase();
+      const response = await fetch(`/api/tickers?filter=${symbolName}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const ret = await response.json();
+      return ret;
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw new Error('Failed to fetch currencies');
+    }
+  };
+
+  const { data: tickers, isLoading: isLoadingTickers } = useQuery({
     queryKey: ['tickers', id],
-    queryFn: async (): Promise<any[]> => fetch(`/api/tickers?ids=${data?.symbol.toLowerString() + "-" + data?.name.toLowerString()}`).then((res) => res.json()),
+    queryFn: fetchData,
+    enabled: !!data, // Chỉ chạy truy vấn khi data đã sẵn sàng
   });
 
   const animatedText = useAnimatedProps(() => {
     return {
-      text: `${state.y.price.value.value.toFixed(2)} €`,
+      text: state.y.price.value.value ? `${state.y.price.value.value.toFixed(2)} €` : '',
       defaultValue: '',
     };
   });
@@ -65,19 +80,25 @@ const Page = () => {
   const animatedDateText = useAnimatedProps(() => {
     const date = new Date(state.x.value.value);
     return {
-      text: `${date.toLocaleDateString()}`,
+      text: date ? `${date.toLocaleDateString()}` : '',
       defaultValue: '',
     };
   });
 
+  if (isLoadingData || isLoadingTickers) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <>
       <Stack.Screen options={{ title: data?.name }} />
       <SectionList
-        style={{ marginTop: headerHeight-40 }}
+        style={{ marginTop: headerHeight - 40 }}
         contentInsetAdjustmentBehavior="automatic"
-        // scrollEnabled={true}
         keyExtractor={(i) => i.title}
         sections={[{ data: [{ title: 'Chart' }] }]}
         renderSectionHeader={() => (
@@ -143,12 +164,12 @@ const Page = () => {
         renderItem={({ item }) => (
           <>
             <View style={[defaultStyles.block, { height: 500 }]}>
-              {tickers && (
+              {tickers && tickers.length > 0 && (
                 <>
-                  {!isActive && (
+                  {!isActive && tickers[tickers.length - 1]?.price !== undefined && (
                     <View>
                       <Text style={{ fontSize: 30, fontWeight: 'bold', color: Colors.dark }}>
-                        {tickers[tickers.length - 1].price.toFixed(2)} €
+                        {tickers[tickers.length - 1]?.price.toFixed(2)} €
                       </Text>
                       <Text style={{ fontSize: 18, color: Colors.gray }}>Today</Text>
                     </View>
@@ -177,7 +198,7 @@ const Page = () => {
                       formatYLabel: (v) => `${v} €`,
                       formatXLabel: (ms) => format(new Date(ms), 'MM/yy'),
                     }}
-                    data={tickers!}
+                    data={tickers}
                     xKey="timestamp"
                     yKeys={['price']}>
                     {({ points }) => (
@@ -192,19 +213,14 @@ const Page = () => {
             </View>
             <View style={[defaultStyles.block, { marginTop: 20 }]}>
               <Text style={styles.subtitle}>Overview</Text>
-              <Text style={{ color: Colors.gray }}>
-                Bitcoin is a decentralized digital currency, without a central bank or single
-                administrator, that can be sent from user to user on the peer-to-peer bitcoin
-                network without the need for intermediaries. Transactions are verified by network
-                nodes through cryptography and recorded in a public distributed ledger called a
-                blockchain.
-              </Text>
+              <Text style={{ color: Colors.gray }}>{data?.description}</Text>
             </View>
           </>
         )}></SectionList>
     </>
   );
 };
+
 const styles = StyleSheet.create({
   subtitle: {
     fontSize: 20,
@@ -229,11 +245,11 @@ const styles = StyleSheet.create({
   categoriesBtnActive: {
     padding: 10,
     paddingHorizontal: 14,
-
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
     borderRadius: 20,
+    backgroundColor: Colors.primaryMuted,
   },
 });
+
 export default Page;

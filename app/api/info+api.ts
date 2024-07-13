@@ -14,7 +14,6 @@ export async function GET(request: Request) {
 //   );
 
 //   const res = await response.json();
-  console.log("Fetch info"); 
   return Response.json(data);
 }
 

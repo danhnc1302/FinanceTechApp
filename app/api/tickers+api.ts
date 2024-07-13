@@ -1,13 +1,12 @@
-
 export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const ids = url.searchParams.get('ids');
-  console.log("ids=",ids)
-  const response = await fetch(
-    `https://api.coinpaprika.com/v1/tickers/${ids}/historical?start=2024-01-01&interval=1d`
-  );
-  const res = await response.json();
-  return Response.json(res);
+  // const url = new URL(request.url);
+  // const filter = url.searchParams.get('ids');
+  // const response = await fetch(
+  //   `https://api.coinpaprika.com/v1/tickers/${filter}/historical?start=2024-01-01&interval=1d`
+  // );
+  // const res = await response.json();
+  // return ExpoResponse.json(res.data);
+  return Response.json(data);
 }
 
 const data = [
