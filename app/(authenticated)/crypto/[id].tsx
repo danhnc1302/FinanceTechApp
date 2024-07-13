@@ -97,7 +97,7 @@ const Page = () => {
     <>
       <Stack.Screen options={{ title: data?.name }} />
       <SectionList
-        style={{ marginTop: headerHeight - 40 }}
+        style={{ marginTop: headerHeight }}
         contentInsetAdjustmentBehavior="automatic"
         keyExtractor={(i) => i.title}
         sections={[{ data: [{ title: 'Chart' }] }]}

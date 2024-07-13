@@ -20,7 +20,7 @@ const Page = () => {
       return data; // Ensure data is returned
     } catch (error) {
       // Optionally handle errors
-      console.error('Fetch error:', error);
+      console.error('Fetch error:', error); 
       throw new Error('Failed to fetch currencies'); // Throws error to `useQuery` to handle
     }
   };
