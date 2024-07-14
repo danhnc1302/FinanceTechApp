@@ -1,4 +1,4 @@
-import Colors from '@/constants/Colors';
+import Colors from "../constants/Colors";
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';

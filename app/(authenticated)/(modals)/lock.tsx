@@ -61,6 +61,7 @@ const Page = () => {
   };
 
   const onBiometricAuthPress = async () => {
+    console.log("danh")
     const { success } = await LocalAuthentication.authenticateAsync();
     if (success) {
       router.replace('/(authenticated)/(tabs)/home');

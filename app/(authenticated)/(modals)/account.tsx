@@ -2,7 +2,7 @@ import { useAuth, useUser } from '@clerk/clerk-expo';
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import { BlurView } from 'expo-blur';
-import Colors from '@/constants/Colors';
+import Colors from '../../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { getAppIcon, setAppIcon } from 'expo-dynamic-app-icon';
@@ -10,15 +10,15 @@ import { getAppIcon, setAppIcon } from 'expo-dynamic-app-icon';
 const ICONS = [
   {
     name: 'Default',
-    icon: require('@/assets/images/icon.png'),
+    icon: require('../../../assets/images/icon.png'),
   },
   {
     name: 'Dark',
-    icon: require('@/assets/images/icon-dark.png'),
+    icon: require('../../../assets/images/icon-dark.png'),
   },
   {
     name: 'Vivid',
-    icon: require('@/assets/images/icon-vivid.png'),
+    icon: require('../../../assets/images/icon-vivid.png'),
   },
 ];
 
@@ -63,7 +63,6 @@ const Page = () => {
     if (!result.canceled) {
       const base64 = `data:image/png;base64,${result.assets[0].base64}`;
       console.log(base64);
-
       user?.setProfileImage({
         file: base64,
       });
@@ -77,9 +76,9 @@ const Page = () => {
 
   return (
     <BlurView
-      intensity={80}
-      tint={'dark'}
-      style={{ flex: 1, paddingTop: 100, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+      intensity={100}
+      tint='dark'
+      style={{ flex: 1, paddingTop: 100 }}>
       <View style={{ alignItems: 'center' }}>
         <TouchableOpacity onPress={onCaptureImage} style={styles.captureBtn}>
           {user?.imageUrl && <Image source={{ uri: user?.imageUrl }} style={styles.avatar} />}
@@ -87,7 +86,7 @@ const Page = () => {
 
         <View style={{ flexDirection: 'row', gap: 6 }}>
           {!edit && (
-            <View style={styles.editRow}>
+            <View style={[styles.editRow, { gap: firstName && lastName ? 12 : 0 }]}>
               <Text style={{ fontSize: 26, color: '#fff' }}>
                 {firstName} {lastName}
               </Text>
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   actions: {
-    backgroundColor: 'rgba(256, 256, 256, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0.47)',
     borderRadius: 16,
     gap: 0,
     margin: 20,
@@ -209,3 +208,5 @@ const styles = StyleSheet.create({
   },
 });
 export default Page;
+
+

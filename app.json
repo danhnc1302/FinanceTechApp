@@ -37,6 +37,12 @@
       "expo-asset",
       "expo-secure-store",
       [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow CongDanh's App to use Face ID."
+        }
+      ],
+      [
         "expo-dynamic-app-icon",
         {
           "default": {
