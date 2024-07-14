@@ -33,8 +33,7 @@
         {
           "origin": "http://10.0.2.2:8081"
         }
-      ]
-      ,
+      ],
       "expo-asset",
       "expo-secure-store",
       [
@@ -53,10 +52,19 @@
             "prerendered": true
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": "http://10.0.2.2:8081"
+      },
+      "eas": {
+        "projectId": "98e7106b-7bff-4c09-910d-0006279147c3"
+      }
     }
   }
 }

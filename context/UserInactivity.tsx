@@ -19,7 +19,7 @@ export const UserInactivityProvider = ({ children }: any) => {
 
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
         console.log('🚀 ~ handleAppStateChange ~ nextAppState', nextAppState);
-
+        console.log(isSignedIn)
         if (nextAppState === 'background') {
             recordStartTime();
         } else if (nextAppState === 'active' && appState.current.match(/background/)) {
@@ -31,7 +31,7 @@ export const UserInactivityProvider = ({ children }: any) => {
             const elapsed = Date.now() - (timestampNumber || 0);
             console.log('🚀 ~ handleAppStateChange ~ elapsed:', elapsed);
 
-            if (elapsed > 3000 && isSignedIn) {
+            if (elapsed > 3000 ) {
                 router.replace('/(authenticated)/(modals)/lock');
             }
         }

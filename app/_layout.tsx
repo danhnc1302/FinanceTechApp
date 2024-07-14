@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Colors from '@/constants/Colors';
-// import { UserInactivityProvider } from '@/context/UserInactivity';
+import { UserInactivityProvider } from '@/context/UserInactivity';
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 const queryClient = new QueryClient();
@@ -159,7 +159,7 @@ const InitialLayout = () => {
           ),
         }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="(authenticated)/(modals)/lock"
         options={{ headerShown: false, animation: 'none' }}
       />
@@ -176,7 +176,7 @@ const InitialLayout = () => {
             </TouchableOpacity>
           ),
         }}
-      /> */}
+      />
     </Stack>
   );
 };
@@ -185,12 +185,12 @@ const RootLayoutNav = () => {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
       <QueryClientProvider client={queryClient}>
-        {/* <UserInactivityProvider> */}
+        <UserInactivityProvider>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <StatusBar style="light" />
             <InitialLayout />
           </GestureHandlerRootView>
-        {/* </UserInactivityProvider> */}
+        </UserInactivityProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );
